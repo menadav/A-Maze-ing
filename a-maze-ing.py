@@ -1,9 +1,12 @@
+#!/usr/bin/env python3
+
 import sys, random
 from maze_app.generator.MazeGenerator import MazeGenerator
 from parse.config_parser import read_config, parse_config
 from parse.config_model import MazeConfig
 from maze_app.maze import Maze
 from maze_app.themes import classic_theme, dark_theme, forest_theme, neon_theme
+
 
 def main():
     config_path = sys.argv[1] if len(sys.argv) > 1 else "config.txt"
@@ -124,4 +127,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
