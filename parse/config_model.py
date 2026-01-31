@@ -21,7 +21,7 @@ class MazeConfig(BaseModel):
     output_file: str
 
     @model_validator(mode="after")
-    def validations(self):
+    def validations(self) -> MazeConfig:
         w, h = self.width, self.height
         ex, ey = self.entry
         xx, xy = self.exit_
@@ -38,3 +38,4 @@ class MazeConfig(BaseModel):
             raise ValueError("Entry and exit cannot be in same spot")
 
         return self
+
