@@ -64,22 +64,3 @@ def parse_config(config: Dict[str, str]) -> Dict[str, Any]:
             raise ValueError(f"Missing required config key: {r.upper()}")
 
     return parsed
-
-
-
-def main(args):
-    if len(args) != 2:
-        print("Usage: python3 a_maze_ing.py config.txt", file=sys.stderr)
-        sys.exit(1)
-    try:
-        raw_config = read_config(args[1])
-        parsed_config = parse_config(raw_config)
-        config = MazeConfig(**parsed_config)
-        print(config.model_dump(by_alias=True))
-    except FileNotFoundError as e:
-        print(e, file=sys.stderr)
-        sys.exit(1)
-
-
-if __name__ == '__main__':
-    main(sys.argv)
