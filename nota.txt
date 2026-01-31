@@ -1,13 +1,19 @@
-- Cambiado 42, anadido desplzamiento si esta encima la entry
-- Cambiado default pydantic aplicar mas sugestion de errores.
-- Cambiado nombre ficheros maze
-- Renderizacion he anadido nuevos bloques
-- Output archivo anadido.         
+============================================================
+                         NEWS
+- Una Clase el laberinto como piden en subject.
+- He anadido nuevos parametros al MazeGenerator: 
+alghoritm -> prim y dfs_iterativ
+solutions -> bfs y dfs
+- Desplazamiento de 42 por si intentan dejar entrada dentro.
+- render. Recibe como parametro un MazeGenerator
+- output esta controlado por si envian o no output sin camino.
+
 ============================================================
                         PENDIENTE
 - README MazeGenerator
-- LEETE el ultimo apartado del subject reutilizacion
-- Subir chance para dimensiones mas No lo encontrado.
-- OUTPUT CREADO. Aun generando laberinto sin path renderizado hay que enviar el camino igualmente.
-  Solo se muestra si picas aplicar el alghoritmo. Hay que aplicarlo igualmente  para el output pueda enviarlo.
-
+- Input programa a-maze-ing.py
+- check colors , idw nothing bro
+- Ideas de control de Maze
+- Hablado y dicho por okto y los pythonboys. Hay que controlar bien las
+entradas de comandos no poner un default con generador de laberinto para 
+evitarlo.
