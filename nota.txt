@@ -2,9 +2,10 @@
                          NEWS
 - Cleaners entre ordenes 
 - Cambios esteticos main
-- Aádir casi todos los hints de las funiones
+- Añadir hints
 ============================================================
                         PENDIENTE
 - README MazeGenerator
 - Limpiar Codigo
+
 
