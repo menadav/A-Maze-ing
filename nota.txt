@@ -1,0 +1,13 @@
+- Cambiado 42, anadido desplzamiento si esta encima la entry
+- Cambiado default pydantic aplicar mas sugestion de errores.
+- Cambiado nombre ficheros maze
+- Renderizacion he anadido nuevos bloques
+- Output archivo anadido.         
+============================================================
+                        PENDIENTE
+- README MazeGenerator
+- LEETE el ultimo apartado del subject reutilizacion
+- Subir chance para dimensiones mas No lo encontrado.
+- OUTPUT CREADO. Aun generando laberinto sin path renderizado hay que enviar el camino igualmente.
+  Solo se muestra si picas aplicar el alghoritmo. Hay que aplicarlo igualmente  para el output pueda enviarlo.
+
