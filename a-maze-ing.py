@@ -1,10 +1,8 @@
 import sys, random
-from maze_app.maze_class import Maze
-from maze_app.generator import PrimGenerator, ImperfectGenerator
-from maze_app.utils import print_coordinates
+from maze_app.generator.MazeGenerator import MazeGenerator
 from parse.config_parser import read_config, parse_config
-from validation.config_model import MazeConfig
-
+from parse.config_model import MazeConfig
+from maze_app.render import render
 
 def main():
     config_path = sys.argv[1] if len(sys.argv) > 1 else "config.txt"
@@ -21,6 +19,8 @@ def main():
         seed = config.seed
         file = config.output_file
         perfect = config.perfect
+        algorithm = config.algorithm       #####  ANADIR A PARSE Y VALIDATION  KEYS = "Prim" / "Dfs" ####
+        solution = config.solution         ###### ANADIR A PARSE Y VALIDATION  KEYS = "bfs" / "dfs"  ####
         print(f"--- Configuración Cargada ({config_path}) ---")
         print(f"Dimensiones: {height}x{width} | Perfect: {perfect} | Seed: {seed}")
     except ValueError as e:
@@ -33,19 +33,10 @@ def main():
     if seed is not None:
         random.seed(seed)
 
-    maze = Maze(height, width, entry, exit_pos, file)
-
-    if perfect:
-        generator = PrimGenerator()
-    else:
-        generator = ImperfectGenerator()
-
-    maze.generate(generator, seed)
-    maze.render()
-
-    show_path = False
-    paths = {"bfs": None, "dfs": None}
-
+    maze = MazeGenerator(height, width, entry, exit_pos, perfect, seed, algorithm, solution)  ####### ANADIR SOLUTION , ALGHORITM ######
+    maze.generate()
+    render(maze, file, True)
+    #### HE TOCADO HASTA AQUI! #####
     while True:
         print("\n" + "="*20)
         print("  A-MAZE-ING MENU")
@@ -59,10 +50,9 @@ def main():
         choice = input("\nSelect an option: ").strip()
 
         if choice == "1":
-            maze.generate(generator, seed)
+            maze.generate()
             paths = {"bfs": None, "dfs": None}
-            show_path = False
-            maze.render()
+            render(maze, file)
 
         elif choice == "2":
             show_path = not show_path
