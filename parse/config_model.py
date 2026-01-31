@@ -17,7 +17,7 @@ class MazeConfig(BaseModel):
     seed: int | None = None
     perfect: bool = True
     algorithm: str = ""
-    display: str = "ascii"
+    solver: str = ""
     output_file: str
 
     @model_validator(mode="after")
@@ -29,11 +29,12 @@ class MazeConfig(BaseModel):
         if len(self.entry) != 2 or len(self.exit_) != 2:
             raise ValidationError(
                 "Entry and exit must be composted of exactly 2 numbers"
-                )
+            )
         if not (0 <= ex < w and 0 <= ey < h):
             raise ValueError("Entry must be inside maze bounds")
         if not (0 <= xx < w and 0 <= xy < h):
             raise ValueError("Exit must be inside maze bounds")
         if (ex, ey) == (xx, xy):
             raise ValueError("Entry and exit cannot be in same spot")
+
         return self

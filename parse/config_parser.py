@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import sys
 from typing import Any, Dict
-from validation.config_model import MazeConfig
+from parse.config_model import MazeConfig
 
 
 def read_config(path: str) -> Dict[str, str]:
@@ -35,17 +35,36 @@ def parse_value(key, value):
         if v in ("false", "no", "n", "f", "0"):
             return False
         raise ValueError(f"Invalid boolean for PERFECT: '{value}'")
+    if key == "ALGORITHM":
+        v = value.strip().lower()
+        if v in ("prim", "dfs"):
+            return v
+        raise ValueError(f"Invalid ALGORITHM: '{value}' (use prim or dfs)")
+    if key == "SOLVER":
+        v = value.strip().lower()
+        if v in ("bfs", "dfs"):
+            return v
+        raise ValueError(f"Invalid SOLVER: '{value}' (use bfs or dfs)")
     return value
 
 
 def parse_config(config: Dict[str, str]) -> Dict[str, Any]:
     parsed = {}
+
     for key, value in config.items():
         try:
             parsed[key.lower()] = parse_value(key, value)
         except Exception as e:
             raise ValueError(f"Error in {key}: {value} → {e}")
+
+    required = ["width", "height", "entry", "exit", "algorithm", "solver", "output_file"]
+
+    for r in required:
+        if r not in parsed:
+            raise ValueError(f"Missing required config key: {r.upper()}")
+
     return parsed
+
 
 
 def main(args):

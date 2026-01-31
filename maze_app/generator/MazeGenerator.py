@@ -14,7 +14,7 @@ class MazeGenerator:
     def __init__(
         self, height: int, width: int, entry: Tuple[int, int],
         exit_: Tuple[int, int], perfect: bool, seed: Optional[int] = None,
-        algorithm: Optional[str] = "Prim", solution: Optional[str] = "bfs"
+        algorithm: Optional[str] = "prim", solver: Optional[str] = "bfs"
     ):
         self.height = height
         self.width = width
@@ -23,7 +23,7 @@ class MazeGenerator:
         self.perfect = perfect
         self.seed = seed
         self.algorithm = algorithm
-        self.solution = solution
+        self.solver = solver
         self.grid = [[15 for _ in range(width)] for _ in range(height)]
         self.pattern42_coords: Set[Tuple[int, int]] = set()
 
@@ -33,9 +33,9 @@ class MazeGenerator:
         self.grid = [
             [15 for _ in range(self.width)] for _ in range(self.height)
             ]
-        if self.algorithm == "Prim":
+        if self.algorithm == "prim":
             self._generate_prim()
-        elif self.algorithm == "Dfs":
+        elif self.algorithm == "dfs":
             self._generate_dfs()
         return self.grid
 
@@ -91,12 +91,16 @@ class MazeGenerator:
 
     def get_solution(
             self, output_type: Optional[str] = "str"):
-        path = self.bfs() if self.solution == "bfs" else self.dfs_solution()
+        path = self.bfs() if self.solver == "bfs" else self.dfs_solution()
         if output_type == "way":
             return path
         return self.print_coordinates(path) if path else ""
 
     def get_maze_structure(self) -> List[List[int]]:
+        return self
+
+    def swap_generate(self, algorithm: str):
+        self.algorithm = alghorithm
         return self
 
     def dfs_solution(self):
@@ -242,7 +246,7 @@ class MazeGenerator:
     def _write_42(self, visited: Set[Tuple[int, int]]):
         start_f, start_c = (self.height // 2) - 2, (self.width // 2) - 3
         pattern = [
-            (0, 0), (1, 0), (2, 0), (2, 1), (0, 2), (1, 2), (2, 2),
+            (0, 0), (1, 0), (2, 0), (2, 1), (2, 2),
             (3, 2), (4, 2), (0, 4), (0, 5), (0, 6), (1, 6), (2, 6),
             (2, 5), (2, 4), (3, 4), (4, 4), (4, 5), (4, 6)
         ]
@@ -263,7 +267,7 @@ class MazeGenerator:
 
 
 if __name__ == "__main__":
-    maze = MazeGenerator(4, 4, (0, 0), (2, 2), True, "Dfs")
+    maze = MazeGenerator(4, 4, (0, 0), (2, 2), True, "dfs")
     maze.generate()
     print(maze.grid)
     print(maze.get_solution())

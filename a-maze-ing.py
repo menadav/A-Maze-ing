@@ -2,7 +2,8 @@ import sys, random
 from maze_app.generator.MazeGenerator import MazeGenerator
 from parse.config_parser import read_config, parse_config
 from parse.config_model import MazeConfig
-from maze_app.render import render
+from maze_app.maze import Maze
+from maze_app.themes import classic_theme, dark_theme, forest_theme, neon_theme
 
 def main():
     config_path = sys.argv[1] if len(sys.argv) > 1 else "config.txt"
@@ -19,53 +20,65 @@ def main():
         seed = config.seed
         file = config.output_file
         perfect = config.perfect
-        algorithm = config.algorithm       #####  ANADIR A PARSE Y VALIDATION  KEYS = "Prim" / "Dfs" ####
-        solution = config.solution         ###### ANADIR A PARSE Y VALIDATION  KEYS = "bfs" / "dfs"  ####
+        algorithm = config.algorithm
+        solver = config.solver
+
         print(f"--- Configuración Cargada ({config_path}) ---")
         print(f"Dimensiones: {height}x{width} | Perfect: {perfect} | Seed: {seed}")
+
     except ValueError as e:
-        for error in e.errors():
-            print(f"Error {error['msg'][11:]}")
+        print(f"Config error: {e}")
         sys.exit(1)
+
     except Exception as e:
         print(f"Error: {e}")
         sys.exit(1)
+
+
     if seed is not None:
         random.seed(seed)
 
-    maze = MazeGenerator(height, width, entry, exit_pos, perfect, seed, algorithm, solution)  ####### ANADIR SOLUTION , ALGHORITM ######
+    generator = MazeGenerator(height, width, entry, exit_pos, perfect, seed, algorithm, solver)
+    maze = Maze(generator)
+
     maze.generate()
-    render(maze, file, True)
-    #### HE TOCADO HASTA AQUI! #####
+    maze.render()
+
+    show_path = False
+    paths = {"bfs": None, "dfs": None}
+
     while True:
         print("\n" + "="*20)
         print("  A-MAZE-ING MENU")
         print("="*20)
-        print("1. Regenerate maze")
+        print(f"1. Regenerate maze (Current: {maze.current_algorithm.upper()})")
         print(f"2. Show/Hide path (Current: {maze.current_solver.upper()})")
-        print("3. Change solver (BFS/DFS)")
-        print("4. Change maze wall color")
-        print("5. Exit")
+        print("3. Change algorithm (DFS/PRIM)")
+        print("4. Change solver (BFS/DFS)")
+        print("5. Change color theme")
+        print("6. Exit")
+        print(maze.generator.algorithm)
 
         choice = input("\nSelect an option: ").strip()
 
         if choice == "1":
             maze.generate()
             paths = {"bfs": None, "dfs": None}
-            render(maze, file)
+            show_path = False
+            maze.render()
 
         elif choice == "2":
             show_path = not show_path
             if show_path:
                 if paths[maze.current_solver] is None:
-                    paths[maze.current_solver] = maze.solve()
+                    paths[maze.current_solver] = maze.solve("way")
 
                 path = paths[maze.current_solver]
                 if path:
-                    maze.render(path)
+                    maze.render(show_path=True)
                     print("\nCoordinates:")
                     print(path)
-                    print("\nDirections:", print_coordinates(path))
+                    print("\nDirections:", generator.print_coordinates(path))
                 else:
                     print("\n[!] No path found!")
                     show_path = False
@@ -73,30 +86,42 @@ def main():
                 maze.render()
 
         elif choice == "3":
-            s_choice = input("Select Solver (1: BFS, 2: DFS): ").strip()
-            maze.current_solver = "bfs" if s_choice == "1" else "dfs"
-            print(f"Solver changed to: {maze.current_solver.upper()}")
+            s_choice = input("Select Alghorithm (1: DFS, 2: PRIM): ").strip()
+            maze.current_algorithm = "dfs" if s_choice == "1" else "prim"
+            generator.algorithm = maze.current_algorithm
+            print(f"Alghorithm changed to: {maze.current_algorithm.upper()}")
 
         elif choice == "4":
-            print("\n1. Blue | 2. Purple | 3. Orange | 4. White")
-            c_idx = input("Choose wall color: ").strip()
-            cmap = {
-                "1": "\033[94m",
-                "2": "\033[35m",
-                "3": "\033[38;2;255;165;0m",
-                "4": "\033[97m"
-            }
-            if c_idx in cmap:
-                maze.set_colors({"wall": cmap[c_idx]})
-                current_p = paths[maze.current_solver] if show_path else None
-                maze.render(current_p)
+            s_choice = input("Select Solver (1: BFS, 2: DFS): ").strip()
+            maze.current_solver = "bfs" if s_choice == "1" else "dfs"
+            generator.solver = maze.current_solver
+            print(f"Solver changed to: {maze.current_solver.upper()}")
 
         elif choice == "5":
+            print("\n1. Classic")
+            print("2. Dark")
+            print("3. Forest")
+            print("4. Neon")
+            t = input("Choose a theme: ").strip()
+
+            if t == "1":
+                maze.set_theme(classic_theme())
+            elif t == "2":
+                maze.set_theme(dark_theme())
+            elif t == "3":
+                maze.set_theme(forest_theme())
+            elif t == "4":
+                maze.set_theme(neon_theme())
+
+            maze.render(show_path)
+
+        elif choice == "6":
             print("Goodbye!")
             break
+
         else:
             print("Invalid option.")
 
-
 if __name__ == "__main__":
     main()
+
