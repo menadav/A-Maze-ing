@@ -1,11 +1,9 @@
 ============================================================
                          NEWS
-- Cleaners entre ordenes 
-- Cambios esteticos main
-- Añadir hints
+- Cambio: 42 (tonteria)
+- Nuevas instancias Maze/ instancia Mazegenrator 
+- Nuevo numero en Menu
 ============================================================
                         PENDIENTE
 - README MazeGenerator
 - Limpiar Codigo
-
-
