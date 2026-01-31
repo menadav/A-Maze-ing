@@ -7,7 +7,7 @@ solutions -> bfs y dfs
 - Desplazamiento de 42 por si intentan dejar entrada dentro.
 - render. Recibe como parametro un MazeGenerator
 - output esta controlado por si envian o no output sin camino.
-
+- Render nuevo parametro : show_path -> muestra camino impreso.
 ============================================================
                         PENDIENTE
 - README MazeGenerator
@@ -15,5 +15,6 @@ solutions -> bfs y dfs
 - check colors , idw nothing bro
 - Ideas de control de Maze
 - Hablado y dicho por okto y los pythonboys. Hay que controlar bien las
-entradas de comandos no poner un default con generador de laberinto para 
+entradas de argumentos no poner un default con generador de laberinto para 
 evitarlo.
+
