@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-import sys
 from typing import Any, Dict
 from parse.config_model import MazeConfig
 
@@ -64,3 +62,4 @@ def parse_config(config: Dict[str, str]) -> Dict[str, Any]:
             raise ValueError(f"Missing required config key: {r.upper()}")
 
     return parsed
+
