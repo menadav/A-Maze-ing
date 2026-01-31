@@ -1,7 +1,7 @@
 import sys
 
 
-def generetor_file_maze(matrix, entry, exit, way, name_file="maze.out"):
+def generetor_file_maze(matrix, entry, exit, way, name_file="maze.out") -> None:
     try:
         with open(name_file, 'w') as f:
             for line in matrix:
@@ -16,3 +16,4 @@ def generetor_file_maze(matrix, entry, exit, way, name_file="maze.out"):
     except OSError as e:
         print(f"Error writing output file: {e.strerror}")
         sys.exit(1)
+
