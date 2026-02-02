@@ -1,0 +1,9 @@
+=================    NEWS     =====================
+- Codigo limpio lint
+- ValidationsErrors. Sin duplicados, mandatorys especificos.
+- Testeo de Errores
+
+=================  Pendiente  =====================
+- Readme MazeGeneretor
+- Intentar comprobar y manejo de errores con config , ideas.
+- Estudiar tu codigo.
