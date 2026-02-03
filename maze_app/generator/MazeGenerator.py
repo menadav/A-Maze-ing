@@ -4,6 +4,7 @@ from typing import List, Tuple, Set, Optional, Dict, Union
 
 
 class Wall(IntEnum):
+    """Binary representation of cell walls."""
     NORTH = 1
     EAST = 2
     SOUTH = 4
@@ -11,6 +12,14 @@ class Wall(IntEnum):
 
 
 class MazeGenerator:
+    """Generates and solves mazes using various algorithms.
+
+    Attributes:
+        height, width (int): Maze dimensions.
+        entry, exit (tuple): Start and end points.
+        perfect (bool): If True, no loops exist.
+        grid (List[List[int]]): 2D list storing wall states.
+    """
     def __init__(
         self,
         height: int,
@@ -22,6 +31,7 @@ class MazeGenerator:
         algorithm: Optional[str] = "prim",
         solver: Optional[str] = "bfs",
     ):
+        """Initialize maze parameters and configuration."""
         self.height = height
         self.width = width
         self.entry = entry
@@ -34,6 +44,7 @@ class MazeGenerator:
         self.pattern42_coords: Set[Tuple[int, int]] = set()
 
     def generate(self) -> List[List[int]]:
+        """Orchestrates maze generation based on the selected algorithm."""
         if self.seed is not None:
             random.seed(self.seed)
         self.grid = [
@@ -46,6 +57,7 @@ class MazeGenerator:
         return self.grid
 
     def _generate_dfs(self) -> List[List[int]]:
+        """Creates a maze path using Depth-First Search (Backtracking)."""
         self.pattern42_coords = set()
         visited: Set[Tuple[int, int]] = set()
         if self.width >= 15 and self.height >= 15:
@@ -76,6 +88,7 @@ class MazeGenerator:
         return self.grid
 
     def _generate_prim(self) -> List[List[int]]:
+        """Creates a maze path using a randomized Prim's algorithm."""
         self.pattern42_coords = set()
         visited: Set[Tuple[int, int]] = set()
         if self.width >= 15 and self.height >= 15:
@@ -106,12 +119,16 @@ class MazeGenerator:
     def get_solution(
         self, output_type: Optional[str] = "str"
     ) -> Union[List[Tuple[int, int]], str]:
+        """
+        Returns the solution path as a list of tuples or a direction string.
+        """
         path = self.bfs() if self.solver == "bfs" else self.dfs_solution()
         if output_type == "way":
             return path if path is not None else []
         return self.print_coordinates(path) if path else ""
 
     def dfs_solution(self) -> Optional[List[Tuple[int, int]]]:
+        """Finds a solution path using Depth-First Search."""
         way = self.entry
         objective = self.exit
         stack: List[Tuple[int, int]] = [way]
@@ -141,6 +158,9 @@ class MazeGenerator:
         parent: Dict[Tuple[int, int], Optional[Tuple[int, int]]],
         target: Optional[Tuple[int, int]],
     ) -> List[Tuple[int, int]]:
+        """
+        Traces back the path from the exit to the entry using parent nodes.
+        """
         path: List[Tuple[int, int]] = []
         while target is not None:
             path.append(target)
@@ -148,6 +168,7 @@ class MazeGenerator:
         return path[::-1]
 
     def bfs(self) -> Optional[List[Tuple[int, int]]]:
+        """Finds the shortest solution path using Breadth-First Search."""
         way = self.entry
         objective = self.exit
         queue: List[Tuple[int, int]] = [way]
@@ -175,6 +196,10 @@ class MazeGenerator:
         return None
 
     def print_coordinates(self, way: List[Tuple[int, int]]) -> str:
+        """
+        Converts a coordinate list into a
+        cardinal direction string (N, S, E, W).
+        """
         if not way:
             return ""
         coordinates = ""
@@ -194,6 +219,9 @@ class MazeGenerator:
     def _get_neighbor_coords(
         self, f: int, c: int, direction: Wall
     ) -> Tuple[int, int]:
+        """
+        Calculates coordinates of a neighboring cell based on direction.
+        """
         if direction == Wall.NORTH:
             return f - 1, c
         if direction == Wall.SOUTH:
@@ -205,6 +233,9 @@ class MazeGenerator:
         return f, c
 
     def _connect_cells(self, f: int, c: int, direction: Wall) -> bool:
+        """
+        Removes the wall between two adjacent cells (bitwise update).
+        """
         if not (self.grid[f][c] & direction.value):
             return False
         if direction == Wall.NORTH and f > 0:
@@ -226,9 +257,13 @@ class MazeGenerator:
         return False
 
     def _get_neighbor_bits(self, f: int, c: int, direction: int = 0) -> int:
+        """Return neighbor bits"""
         return self.grid[f][c + direction]
 
     def calculate_chance(self) -> float:
+        """
+        Determines wall-breaking probability based on maze area.
+        """
         area = self.width * self.height
         steps: List[Tuple[int, float]] = [
             (9, 1.0),
@@ -244,6 +279,7 @@ class MazeGenerator:
         return 0.1
 
     def _apply_imperfect_logic(self, chance: float) -> "MazeGenerator":
+        """Randomly removes walls to create loops in non-perfect mazes."""
         walls_broken = 0
         for y in range(1, self.height - 1):
             for x in range(1, self.width - 2):
@@ -274,6 +310,7 @@ class MazeGenerator:
         return self
 
     def _write_42(self, visited: Set[Tuple[int, int]]) -> None:
+        """Hardcodes a '42' pattern into the center of the maze grid."""
         start_f, start_c = (self.height // 2) - 2, (self.width // 2) - 3
         pattern = [
             (0, 0),
