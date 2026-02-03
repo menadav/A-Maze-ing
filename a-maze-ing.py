@@ -7,8 +7,8 @@ import os
 try:
     from pydantic import ValidationError
 except ModuleNotFoundError:
-    sys.stderr.write("Error: Pydantic not installed yet.\n"
-                     "Run: make install\n")
+    sys.stderr.write("\033[91mError: Pydantic not installed yet.\n"
+                     "Run: make install\n\033[0m")
     sys.exit(1)
 
 from typing import List, Tuple, Optional, Dict, Union
