@@ -5,13 +5,13 @@ PIP = $(VENV)/bin/pip
 run: $(VENV)
     $(PYTHON) a-maze-ing.py config.txt
 
-$(VENV): requirements.txt
+$(VENV):
     python3 -m venv $(VENV)
+
+install: $(VENV)
     $(PIP) install --upgrade pip
     $(PIP) install -r requirements.txt
     $(PIP) install ./maze_app/generator
-
-install: $(VENV)
     @echo "Dependencies installed."
 
 debug: $(VENV)
