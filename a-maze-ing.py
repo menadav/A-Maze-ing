@@ -3,7 +3,14 @@
 import sys
 import random
 import os
-from pydantic import ValidationError
+
+try:
+    from pydantic import ValidationError
+except ModuleNotFoundError:
+    sys.stderr.write("Error: Pydantic not installed yet.\n"
+                     "Run: make install\n")
+    sys.exit(1)
+
 from typing import List, Tuple, Optional, Dict, Union
 from maze_app.generator.MazeGenerator import MazeGenerator
 from parse.config_parser import read_config, parse_config
