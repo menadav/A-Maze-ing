@@ -1,7 +1,7 @@
 import sys
 
 try:
-    from pydantic import BaseModel, Field, model_validator, ValidationError
+    from pydantic import BaseModel, Field, model_validator
 except ImportError:
     sys.stderr.write("Pydantic not found: Install -> pip install pydantic")
     sys.exit(1)
@@ -32,7 +32,7 @@ class MazeConfig(BaseModel):
         ex, ey = self.entry
         xx, xy = self.exit_
         if len(self.entry) != 2 or len(self.exit_) != 2:
-            raise ValidationError(
+            raise ValueError(
                 "Entry and exit must be composted of exactly 2 numbers"
             )
         if not (0 <= ex < w and 0 <= ey < h):
