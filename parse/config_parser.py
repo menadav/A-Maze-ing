@@ -2,6 +2,10 @@ from typing import Any, Dict
 
 
 def read_config(path: str) -> Dict[str, str]:
+    """
+    Load a config file and return raw key/value pairs. 
+    Ignores comments, validates allowed keys, and rejects duplicates.
+    """
     config = {}
     try:
         with open(path) as file:
@@ -16,7 +20,7 @@ def read_config(path: str) -> Dict[str, str]:
                 if not line or line[0] == '#':
                     continue
                 elif "=" not in line:
-                    raise FileNotFoundError()
+                    raise ValueError("no config, txt not found")
                 key, value = map(str.strip, line.split("=", 1))
                 if key in (check):
                     if key in (checking):
@@ -31,6 +35,9 @@ def read_config(path: str) -> Dict[str, str]:
 
 
 def parse_value(key: str, value: str) -> Any:
+    """Convert a raw config value into the correct 
+    Python type based on the expected format for each key.
+    """
     if key in ("WIDTH", "HEIGHT"):
         return int(value)
     if key in ("ENTRY", "EXIT"):
@@ -58,6 +65,9 @@ def parse_value(key: str, value: str) -> Any:
 
 
 def parse_config(config: Dict[str, str]) -> Dict[str, Any]:
+    """Parse and validate all config entries, ensuring required keys exist 
+    and returning a fully typed configuration dictionary.
+    """
     parsed = {}
 
     for key, value in config.items():
