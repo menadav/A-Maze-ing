@@ -1,0 +1,12 @@
+.venv/
+venv/
+env/
+
+__pycache__/
+.mypy_cache/
+
+build/
+*.egg-info/
+*.tar.gz
+*.whl
+
