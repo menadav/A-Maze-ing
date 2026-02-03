@@ -3,7 +3,7 @@ from typing import Any, Dict
 
 def read_config(path: str) -> Dict[str, str]:
     """
-    Load a config file and return raw key/value pairs. 
+    Load a config file and return raw key/value pairs.
     Ignores comments, validates allowed keys, and rejects duplicates.
     """
     config = {}
@@ -35,7 +35,7 @@ def read_config(path: str) -> Dict[str, str]:
 
 
 def parse_value(key: str, value: str) -> Any:
-    """Convert a raw config value into the correct 
+    """Convert a raw config value into the correct
     Python type based on the expected format for each key.
     """
     if key in ("WIDTH", "HEIGHT"):
@@ -65,7 +65,7 @@ def parse_value(key: str, value: str) -> Any:
 
 
 def parse_config(config: Dict[str, str]) -> Dict[str, Any]:
-    """Parse and validate all config entries, ensuring required keys exist 
+    """Parse and validate all config entries, ensuring required keys exist
     and returning a fully typed configuration dictionary.
     """
     parsed = {}
