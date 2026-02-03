@@ -77,14 +77,3 @@ This module is designed to be **platform-agnostic**. Since the output is a raw m
 * **Game Engines**: Easily export the `List[List[int]]` as a **JSON** file to be read by **Unity**, **Godot**, or **Unreal**.
 * **Frontend**: Ideal for React/Vue canvas visualizations where each bit corresponds to a CSS border.
 * **Solvability**: The solvers (`bfs`/`dfs`) return standard coordinate lists, making it easy to implement AI agents or "hint" systems in any external application.
-
----
-
-## API Overview
-
-| Method | Returns | Description |
-| :--- | :--- | :--- |
-| `generate()` | `List[List[int]]` | Executes the carving algorithm. |
-| `get_solution(type)` | `Union[List, str]` | Solves the maze via BFS or DFS. |
-| `swap_generate(algo)` | `self` | Swaps the algorithm (Prim/DFS) fluently. |
-| `get_maze_structure()` | `List[List[int]]` | Returns the current state of the grid. |
