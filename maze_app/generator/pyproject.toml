@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 authors = [
     { name = "David Mena Linuesa" },
-	{ name = "Roger Marin Navarro" }
+	{ name = "Roger Marín Navarro" }
 ]
 
 [tool.setuptools]
