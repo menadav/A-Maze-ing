@@ -25,7 +25,7 @@ class MazeConfig(BaseModel):
     @model_validator(mode="after")
     def validations(self) -> "MazeConfig":
         """
-        Validate entry/exit coordinates and ensure they 
+        Validate entry/exit coordinates and ensure they
         lie within bounds and are not identical.
         """
         w, h = self.width, self.height
