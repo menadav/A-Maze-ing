@@ -6,15 +6,20 @@ A high-performance standalone Python engine for generating and solving grid-base
 ## Installation
 
 **Build the package**:
+
 ```bash
+python3 -m build
+```
+
+```bash
+pip install dist/mazegen-1.0.0.tar.gz
 pip install ./maze_app/generator
 ```
 
 Then import it:
 
 ```python
-from maze_app.generator.MazeGenerator import MazeGenerator
-```
+from mazegen import MazeGenerator
 
 ---
 ## Features
@@ -84,3 +89,4 @@ This module is designed to be **platform-agnostic**. Since the output is a raw m
 | `get_solution(type)` | `Union[List, str]` | Solves the maze via BFS or DFS. |
 | `swap_generate(algo)` | `self` | Swaps the algorithm (Prim/DFS) fluently. |
 | `get_maze_structure()` | `List[List[int]]` | Returns the current state of the grid. |
+
