@@ -8,6 +8,10 @@ except ImportError:
 
 
 class MazeConfig(BaseModel):
+    """
+    Typed configuration model for maze generation and solving.
+    Validates dimensions, entry/exit positions, algorithm, and solver.
+    """
     width: int = Field(ge=2)
     height: int = Field(ge=2)
     entry: tuple[int, int]
@@ -20,6 +24,10 @@ class MazeConfig(BaseModel):
 
     @model_validator(mode="after")
     def validations(self) -> "MazeConfig":
+        """
+        Validate entry/exit coordinates and ensure they 
+        lie within bounds and are not identical.
+        """
         w, h = self.width, self.height
         ex, ey = self.entry
         xx, xy = self.exit_
@@ -35,3 +43,4 @@ class MazeConfig(BaseModel):
             raise ValueError("Entry and exit cannot be in same spot")
 
         return self
+
