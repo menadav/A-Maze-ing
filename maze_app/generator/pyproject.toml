@@ -1,9 +1,18 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "maze-generator"
-version = "0.1.0"
+name = "mazegen"
+version = "1.0.0"
 description = "Maze generation algorithms"
+readme = "README.md"
 requires-python = ">=3.10"
+authors = [
+    { name = "David Mena Linuesa" },
+	{ name = "Roger Marin Navarro" }
+]
+
+[tool.setuptools]
+package-dir = {"" = "."}
+py-modules = ["MazeGenerator"]

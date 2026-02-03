@@ -1,4 +1,4 @@
-from typing import Any, Dict, Union, List, Tuple
+from typing import Dict, Union, List, Tuple
 from maze_app.render.render import render_ascii
 from maze_app.themes import classic_theme
 from maze_app.generator.MazeGenerator import MazeGenerator
@@ -14,14 +14,6 @@ class Maze:
 
     def generate(self) -> None:
         self.generator.generate()
-
-    def swap_generate(self) -> Any:
-        algo = (
-            self.current_algorithm
-            if self.current_algorithm is not None
-            else "prim"
-        )
-        return self.generator.swap_generate(algo)
 
     def solve(self, mode: str = "way") -> Union[List[Tuple[int, int]], str]:
         return self.generator.get_solution(mode)

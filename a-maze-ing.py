@@ -13,6 +13,10 @@ from maze_app.themes import classic_theme, dark_theme, neon_theme
 
 
 def main() -> None:
+    """
+    Coordinates configuration loading, the main CLI loop,
+    and state management (algorithms, solvers, and themes) for the maze.
+    """
     config_path = sys.argv[1] if len(sys.argv) > 1 else "config.txt"
     try:
         raw_config = read_config(config_path)
@@ -61,8 +65,12 @@ def main() -> None:
     )
     maze = Maze(generator, file)
 
-    maze.generate()
-    maze.render()
+    try:
+        maze.generate()
+        maze.render()
+    except Exception as e:
+        sys.stderr.write(f"Generation error: {e}\n")
+        sys.exit(1)
 
     print(f"\n{purple}--- Configuration Loaded ({config_path}) ---")
     print(
@@ -75,156 +83,175 @@ def main() -> None:
         "bfs": None,
         "dfs": None,
     }
-
-    while True:
-        curr_alg = (
-            maze.current_algorithm if maze.current_algorithm else "unknown"
-        )
-        curr_sol = maze.current_solver if maze.current_solver else "unknown"
-
-        print("\n" + green + "=" * 20)
-        print("  A-MAZE-ING MENU")
-        print("=" * 20)
-        print(
-            f"{reset}{blue}1. Regenerate maze" f"(Current: {curr_alg.upper()})"
-        )
-        print(f"2. Show/Hide path (Current: {curr_sol.upper()})")
-        print("3. Change algorithm")
-        print("4. Change solver")
-        print("5. Change color theme")
-        print("6. Exit", reset)
-
-        choice = input(f"\n{brown}Select an option: {reset}").strip()
-
-        if choice == "1":
-            os.system("clear")
-            maze.generate()
-            paths = {"bfs": None, "dfs": None}
-            show_path = False
-            maze.render()
-            print(f"\n{purple}--- Configuration Loaded ({config_path}) ---")
-            print(
-                f"Dimensions: {height}x{width} "
-                f"| Perfect: {perfect} | Seed: {seed}{reset}"
+    try:
+        while True:
+            curr_alg = (
+                maze.current_algorithm if maze.current_algorithm else "unknown"
+            )
+            curr_sol = (
+                maze.current_solver if maze.current_solver else "unknown"
             )
 
-        elif choice == "2":
-            os.system("clear")
-            show_path = not show_path
-            solver_key = maze.current_solver
-            if show_path and isinstance(solver_key, str):
-                if paths.get(solver_key) is None:
-                    paths[solver_key] = maze.solve("way")
-                path = paths[solver_key]
-                if isinstance(path, list):
-                    maze.render(show_path=True)
-                    print("\nCoordinates:")
-                    print(path)
-                    print("\nDirections:", generator.print_coordinates(path))
-                elif isinstance(path, str) and path != "":
-                    maze.render(show_path=True)
-                    print(f"\n{path}")
-                else:
-                    print("\n[!] No path found!")
-                    show_path = False
-            else:
+            print("\n" + green + "=" * 20)
+            print("  A-MAZE-ING MENU")
+            print("=" * 20)
+            print(
+                f"{reset}{blue}1. Regenerate maze"
+                f"(Current: {curr_alg.upper()})"
+            )
+            print(f"2. Show/Hide path (Current: {curr_sol.upper()})")
+            print("3. Change algorithm")
+            print("4. Change solver")
+            print("5. Change color theme")
+            print("6. Exit", reset)
+
+            try:
+                choice = input(f"\n{brown}Select an option: {reset}").strip()
+            except EOFError:
+                break
+
+            if choice == "1":
+                os.system("clear")
+                maze.generate()
+                paths = {"bfs": None, "dfs": None}
+                show_path = False
                 maze.render()
                 print(
-                    f"\n{purple}--- Configuration" f"Loaded ({config_path}) --"
+                    f"\n{purple}--- Configuration"
+                    f"Loaded ({config_path}) ---"
                 )
                 print(
                     f"Dimensions: {height}x{width} "
                     f"| Perfect: {perfect} | Seed: {seed}{reset}"
                 )
 
-        elif choice == "3":
-            while True:
-                print(orange + "1: PRIM\n" "2: DFS\n" "3: Exit\n", reset)
-                a_choice = input(f"{brown}Select Algorithm: {reset}").strip()
-                if a_choice == "1":
-                    maze.current_algorithm = "prim"
-                    break
-                elif a_choice == "2":
-                    maze.current_algorithm = "dfs"
-                    break
-                elif a_choice == "3":
-                    break
+            elif choice == "2":
+                os.system("clear")
+                show_path = not show_path
+                solver_key = maze.current_solver
+                if show_path and isinstance(solver_key, str):
+                    if paths.get(solver_key) is None:
+                        paths[solver_key] = maze.solve("way")
+                    path = paths[solver_key]
+                    if isinstance(path, list):
+                        maze.render(show_path=True)
+                        print("\nCoordinates:")
+                        print(path)
+                        print(
+                            "\nDirections:"
+                            f"{generator.print_coordinates(path)}"
+                        )
+                    elif isinstance(path, str) and path != "":
+                        maze.render(show_path=True)
+                        print(f"\n{path}")
+                    else:
+                        print("\n[!] No path found!")
+                        show_path = False
                 else:
-                    print(f"{red}Invalid option. Try again. {reset}")
+                    maze.render()
+                    print(
+                        f"\n{purple}--- Configuration"
+                        f"Loaded ({config_path}) --"
+                    )
+                    print(
+                        f"Dimensions: {height}x{width} "
+                        f"| Perfect: {perfect} | Seed: {seed}{reset}"
+                    )
 
-            os.system("clear")
-            generator.algorithm = maze.current_algorithm
-            maze.render(show_path)
-            alg_display = (
-                maze.current_algorithm if maze.current_algorithm else ""
-            )
-            print(
-                f"\n{purple}Algorithm changed to:"
-                f"{alg_display.upper()}{reset}"
-            )
+            elif choice == "3":
+                while True:
+                    print(orange + "1: PRIM\n" "2: DFS\n" "3: Exit\n", reset)
+                    a_choice = input(
+                        f"{brown}Select Algorithm: "f"{reset}").strip()
+                    if a_choice == "1":
+                        maze.current_algorithm = "prim"
+                        break
+                    elif a_choice == "2":
+                        maze.current_algorithm = "dfs"
+                        break
+                    elif a_choice == "3":
+                        break
+                    else:
+                        print(f"{red}Invalid option. Try again. {reset}")
 
-        elif choice == "4":
-            while True:
-                print(orange + "1: BFS\n" "2: DFS\n" "3: Exit\n", reset)
-                s_choice = input(f"{brown}Select Solver:{reset}").strip()
-                if s_choice == "1":
-                    maze.current_solver = "bfs"
-                    break
-                elif s_choice == "2":
-                    maze.current_solver = "dfs"
-                    break
-                elif s_choice == "3":
-                    break
-                else:
-                    print(f"{red}Invalid option. Try again.{reset}")
-            os.system("clear")
-            generator.solver = maze.current_solver
-            maze.render(show_path)
-            sol_display = maze.current_solver if maze.current_solver else ""
-            print(
-                f"\n{purple}Solver changed to:" f"{sol_display.upper()}{reset}"
-            )
+                os.system("clear")
+                generator.algorithm = maze.current_algorithm
+                maze.render(show_path)
+                alg_display = (
+                    maze.current_algorithm if maze.current_algorithm else ""
+                )
+                print(
+                    f"\n{purple}Algorithm changed to:"
+                    f"{alg_display.upper()}{reset}"
+                )
 
-        elif choice == "5":
-            while True:
-                print(f"{orange}1. Classic")
-                print("2. Dark")
-                print("3. Neon")
-                print("4. Exit")
+            elif choice == "4":
+                while True:
+                    print(orange + "1: BFS\n" "2: DFS\n" "3: Exit\n", reset)
+                    s_choice = input(f"{brown}Select Solver:{reset}").strip()
+                    if s_choice == "1":
+                        maze.current_solver = "bfs"
+                        break
+                    elif s_choice == "2":
+                        maze.current_solver = "dfs"
+                        break
+                    elif s_choice == "3":
+                        break
+                    else:
+                        print(f"{red}Invalid option. Try again.{reset}")
+                os.system("clear")
+                generator.solver = maze.current_solver
+                maze.render(show_path)
+                sol_display = (
+                    maze.current_solver if maze.current_solver else ""
+                )
+                print(
+                    f"\n{purple}Solver changed to:"
+                    f"{sol_display.upper()}{reset}"
+                )
 
-                print()
-                t = input(f"{brown}Choose a theme:{reset}").strip()
+            elif choice == "5":
+                while True:
+                    print(f"{orange}1. Classic")
+                    print("2. Dark")
+                    print("3. Neon")
+                    print("4. Exit")
 
-                if t == "1":
-                    maze.set_theme(classic_theme())
-                    break
-                elif t == "2":
-                    maze.set_theme(dark_theme())
-                    break
-                elif t == "3":
-                    maze.set_theme(neon_theme())
-                    break
-                elif t == "4":
-                    break
-                else:
-                    print(f"{red}Invalid option. Try again.{reset}")
-            os.system("clear")
-            maze.render(show_path)
+                    print()
+                    t = input(f"{brown}Choose a theme:{reset}").strip()
 
-        elif choice == "6":
-            os.system("clear")
-            print()
-            print(f"{pink}=" * 20)
-            print("     Goodbye!")
-            print("Thanks for trying me")
-            print("=" * 20 + reset)
-            print()
-            break
+                    if t == "1":
+                        maze.set_theme(classic_theme())
+                        break
+                    elif t == "2":
+                        maze.set_theme(dark_theme())
+                        break
+                    elif t == "3":
+                        maze.set_theme(neon_theme())
+                        break
+                    elif t == "4":
+                        break
+                    else:
+                        print(f"{red}Invalid option. Try again.{reset}")
+                os.system("clear")
+                maze.render(show_path)
 
-        else:
-            os.system("clear")
-            maze.render(show_path)
-            print(f"\n{red}Invalid option. Try again.{reset}")
+            elif choice == "6":
+                break
+            else:
+                os.system("clear")
+                maze.render(show_path)
+                print(f"\n{red}Invalid option. Try again.{reset}")
+    except KeyboardInterrupt:
+        pass
+    finally:
+        os.system("clear")
+        print()
+        print(f"{pink}=" * 21)
+        print("      Goodbye!")
+        print("Thanks for testing me")
+        print("=" * 21 + reset)
+        print()
 
 
 if __name__ == "__main__":

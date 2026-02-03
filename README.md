@@ -73,12 +73,13 @@ Colors: Supports ANSI escape codes for terminal styling.
 --- 
 
 # Technical Decisions
+## Generator
 Maze Generation Algorithm: 
 
     - Randomized Prim's
+    - Randomized Dfs
 
 ## Why Prim's?
-
 Performance: 
 
     - It is highly efficient for grid-based graphs.
@@ -87,7 +88,33 @@ Aesthetics:
 
     - It creates a maze that looks more natural and is harder to solve by simply following one direction.
 
+## Why Dfs?
+Aesthetics:
+    -  Creates long, winding corridors with fewer dead ends, resulting in a "deep" maze feel.
+
+Complexity: 
+    - Highly efficient using a Stack (LIFO), making it ideal for large grids where recursion depth isn't an issue.
+
 --- 
+## Solver
+Maze Solving Algorithm:
+    - BFS
+    - DFS
+
+## Why BFS?
+Optimality: 
+    - Guaranteed to find the shortest path in an unweighted grid.
+
+Visuals: 
+    - Excellent for demonstrating "flood-fill" exploration.
+
+## Why DFS?
+Memory Efficiency: 
+    - Uses less memory than BFS as it only stores the current path, not the entire frontier.
+
+Speed: 
+    - Often finds a solution faster than BFS by diving deep into branches, even if it’s not the shortest one.
+
 
 # Reusable Code
 
@@ -95,6 +122,15 @@ The core logic in maze_app/maze_types.py and maze_app/utils.py is strictly decou
 The Bitmask Wall System using:
 (NORTH, SOUTH, EAST, WEST values) 
 is designed to be imported into any grid-based game or simulation beyond this project.
+
+Bitmask Reference
+|Direction  |	Binary	| Decimal |
+|-----------|-----------|---------|
+| NORTH	    |0001	    |   1     |
+| SOUTH	    |0010	    |   2     |
+| EAST	    |0100	    |   4     |
+| WEST	    |1000	    |   8     |
+
 
 --- 
 
