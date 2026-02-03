@@ -26,4 +26,3 @@ def generetor_file_maze(
     except OSError as e:
         sys.stderr.write(f"Error writing output file: {e.strerror}")
         sys.exit(1)
-
