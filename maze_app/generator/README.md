@@ -1,4 +1,4 @@
-_This project has been created as part of the 43 curriculum by dmena-li, rmarin-n._
+_This project has been created as part of the 42 curriculum by dmena-li, rmarin-n._
 # MazeGenerator
 
 A high-performance standalone Python engine for generating and solving grid-based mazes. This module uses a **Bitmask Wall System** to represent grid geometry, allowing for fast generation and compact data storage.
@@ -7,17 +7,13 @@ A high-performance standalone Python engine for generating and solving grid-base
 
 **Build the package**:
 ```bash
-python3 -m build
-```
-
-```bash
-pip install dist/mazegen-1.0.0.tar.gz
+pip install ./maze_app/generator
 ```
 
 Then import it:
 
 ```python
-from mazegen import MazeGenerator
+from maze_app.generator.MazeGenerator import MazeGenerator
 ```
 
 ---
@@ -88,3 +84,4 @@ This module is designed to be **platform-agnostic**. Since the output is a raw m
 | `get_solution(type)` | `Union[List, str]` | Solves the maze via BFS or DFS. |
 | `swap_generate(algo)` | `self` | Swaps the algorithm (Prim/DFS) fluently. |
 | `get_maze_structure()` | `List[List[int]]` | Returns the current state of the grid. |
+
