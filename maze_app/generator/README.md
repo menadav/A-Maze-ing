@@ -88,6 +88,3 @@ This module is designed to be **platform-agnostic**. Since the output is a raw m
 | `get_solution(type)` | `Union[List, str]` | Solves the maze via BFS or DFS. |
 | `swap_generate(algo)` | `self` | Swaps the algorithm (Prim/DFS) fluently. |
 | `get_maze_structure()` | `List[List[int]]` | Returns the current state of the grid. |
-
-
-
