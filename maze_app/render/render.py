@@ -10,7 +10,11 @@ def render_ascii(
     themes: Dict[str, str] = classic_theme(),
     name_file: Optional[str] = "maze.txt"
 ) -> None:
-
+    """
+    Draw the maze in ASCII using colors and,
+    if enabled, the solution path.
+    Also saves the maze and solution to a file.
+    """
     wall_char = "\u2588\u2588"
 
     path_list = mz.get_solution("way") if show_path else []
@@ -85,3 +89,4 @@ def render_ascii(
         sol,
         final_name
     )
+
