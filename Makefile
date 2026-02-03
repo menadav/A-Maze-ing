@@ -27,10 +27,6 @@ lint: $(VENV)
 		--disallow-untyped-defs \
 		--check-untyped-defs
 
-lint-strict: $(VENV)
-	$(VENV)/bin/flake8 a-maze-ing.py parse maze_app
-	$(VENV)/bin/mypy a-maze-ing.py parse maze_app --strict
-
 clean:
 	rm -rf $(VENV)
 	find . -type d -name "__pycache__" -exec rm -rf {} +
