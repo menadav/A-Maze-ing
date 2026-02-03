@@ -8,10 +8,10 @@ def generetor_file_maze(
             way: str,
             name_file: str,
         ) -> None:
-            """
-            Save the maze to a file: walls, entry, exit, 
-            and the solution path.
-            """
+    """
+    Save the maze to a file: walls, entry, exit, 
+    and the solution path.
+    """
     try:
         with open(name_file, 'w') as f:
             for line in matrix:
