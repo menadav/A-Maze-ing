@@ -2,7 +2,7 @@ from typing import Dict
 
 
 def classic_theme() -> Dict[str, str]:
-    """Classic terminal colors."""
+    """Classic color set for the maze."""
     return {
         "entry": "\033[92m",
         "exit": "\033[91m",
@@ -13,7 +13,7 @@ def classic_theme() -> Dict[str, str]:
 
 
 def dark_theme() -> Dict[str, str]:
-    """Dark and muted colors."""
+    """Dark color tones."""
     return {
         "entry": "\033[94m",
         "exit": "\033[95m",
@@ -24,7 +24,7 @@ def dark_theme() -> Dict[str, str]:
 
 
 def neon_theme() -> Dict[str, str]:
-    """Bright neon cyber colors."""
+    """Bright neon-style colors."""
     return {
         "entry": "\033[38;2;0;255;180m",
         "exit": "\033[38;2;255;0;200m",
