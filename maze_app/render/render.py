@@ -89,4 +89,3 @@ def render_ascii(
         sol,
         final_name
     )
-
