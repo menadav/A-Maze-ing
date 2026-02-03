@@ -5,13 +5,15 @@ from maze_app.generator.MazeGenerator import MazeGenerator
 
 
 class Maze:
-    """
-    Simple wrapper that manages the maze: generating it, solving it,
-    choosing a theme, and showing it on screen.
-    """
+    """Manage maze generation, solving, themes, and rendering."""
 
     def __init__(self, generator: "MazeGenerator", file_name: str) -> None:
-        """Store the generator, default theme, and output file name."""
+        """Initialize the maze wrapper.
+
+        Args:
+            generator: Maze generator instance.
+            file_name: Name of the output file.
+        """
         self.generator = generator
         self.themes = classic_theme()
         self.current_solver = generator.solver
@@ -19,19 +21,34 @@ class Maze:
         self.file_name = file_name
 
     def generate(self) -> None:
-        """Create a new maze using the current settings."""
+        """Generate a new maze using the current settings."""
         self.generator.generate()
 
     def solve(self, mode: str = "way") -> Union[List[Tuple[int, int]], str]:
-        """Solve the maze and return either coordinates or directions."""
+        """Solve the maze.
+
+        Args:
+            mode: Output format ("way" for coordinates or directions).
+
+        Returns:
+            A list of coordinates or a direction string.
+        """
         return self.generator.get_solution(mode)
 
     def set_theme(self, theme_dict: Dict[str, str]) -> None:
-        """Change the color theme used when rendering."""
+        """Set the color theme used for rendering.
+
+        Args:
+            theme_dict: Mapping of color roles to ANSI codes.
+        """
         self.themes = theme_dict
 
     def render(self, show_path: bool = False) -> None:
-        """Draw the maze in ASCII, with or without the solution path."""
+        """Render the maze in ASCII.
+
+        Args:
+            show_path: Whether to display the solution path.
+        """
         render_ascii(
             mz=self.generator,
             show_path=show_path,

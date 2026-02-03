@@ -13,10 +13,14 @@ from maze_app.themes import classic_theme, dark_theme, neon_theme
 
 
 def main() -> None:
-    """
-    Main entry point for the maze application.
-    Loads configuration, initializes the maze engine,
-    and runs the interactive menu for generation, solving, and rendering.
+    """Run the maze application.
+
+    Loads the configuration file, initializes the maze generator,
+    renders the initial maze, and provides an interactive menu for
+    regenerating, solving, and customizing the maze.
+
+    Raises:
+        SystemExit: If configuration loading or maze generation fails.
     """
     config_path = "config.txt"
     try:

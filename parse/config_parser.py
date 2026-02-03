@@ -2,9 +2,21 @@ from typing import Any, Dict
 
 
 def read_config(path: str) -> Dict[str, str]:
-    """
-    Load a config file and return raw key/value pairs.
-    Ignores comments, validates allowed keys, and rejects duplicates.
+    """Read a configuration file and return raw key–value pairs.
+
+    The function ignores comments, validates allowed keys, and rejects
+    duplicated or unknown entries.
+
+    Args:
+        path: Path to the configuration file.
+
+    Returns:
+        A dictionary with raw string values for each valid key.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        ValueError: If a line is malformed, duplicated,
+        or contains an unknown key.
     """
     config = {}
     try:
@@ -35,8 +47,18 @@ def read_config(path: str) -> Dict[str, str]:
 
 
 def parse_value(key: str, value: str) -> Any:
-    """Convert a raw config value into the correct
-    Python type based on the expected format for each key.
+    """Convert a raw config value into the appropriate Python type.
+
+    Args:
+        key: Configuration key name.
+        value: Raw string value from the config file.
+
+    Returns:
+        The parsed value, converted to int, tuple, bool,
+        or str depending on the key.
+
+    Raises:
+        ValueError: If the value format is invalid for the given key.
     """
     if key in ("WIDTH", "HEIGHT"):
         return int(value)
@@ -65,8 +87,19 @@ def parse_value(key: str, value: str) -> Any:
 
 
 def parse_config(config: Dict[str, str]) -> Dict[str, Any]:
-    """Parse and validate all config entries, ensuring required keys exist
-    and returning a fully typed configuration dictionary.
+    """Parse and validate all configuration entries.
+
+    Converts raw string values into typed Python objects and ensures that
+    all required keys are present.
+
+    Args:
+        config: Raw key–value pairs loaded from the config file.
+
+    Returns:
+        A dictionary with fully typed configuration values.
+
+    Raises:
+        ValueError: If a required key is missing or a value cannot be parsed.
     """
     parsed = {}
 
