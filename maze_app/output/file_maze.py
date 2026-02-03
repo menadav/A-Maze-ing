@@ -9,7 +9,7 @@ def generetor_file_maze(
             name_file: str,
         ) -> None:
     """
-    Save the maze to a file: walls, entry, exit, 
+    Save the maze to a file: walls, entry, exit
     and the solution path.
     """
     try:
