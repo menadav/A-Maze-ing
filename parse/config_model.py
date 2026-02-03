@@ -43,4 +43,3 @@ class MazeConfig(BaseModel):
             raise ValueError("Entry and exit cannot be in same spot")
 
         return self
-
