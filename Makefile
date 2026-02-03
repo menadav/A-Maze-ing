@@ -5,13 +5,13 @@ PIP = $(VENV)/bin/pip
 run: $(VENV)
 	$(PYTHON) a-maze-ing.py config.txt
 
-$(VENV):
+$(VENV): requirements.txt
 	python3 -m venv $(VENV)
-
-install: $(VENV)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
 	$(PIP) install ./maze_app/generator
+
+install: $(VENV)
 	@echo "Dependencies installed."
 
 debug: $(VENV)
@@ -20,12 +20,12 @@ debug: $(VENV)
 lint: $(VENV)
 	$(VENV)/bin/flake8 a-maze-ing.py parse maze_app
 	$(VENV)/bin/mypy a-maze-ing.py parse maze_app \
-		--explicit-package-bases \
-		--warn-return-any \
-		--warn-unused-ignores \
-		--ignore-missing-imports \
-		--disallow-untyped-defs \
-		--check-untyped-defs
+        --explicit-package-bases \
+        --warn-return-any \
+        --warn-unused-ignores \
+        --ignore-missing-imports \
+        --disallow-untyped-defs \
+        --check-untyped-defs
 
 clean:
 	rm -rf $(VENV)
