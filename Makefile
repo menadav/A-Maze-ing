@@ -1,6 +1,7 @@
 VENV = .venv
 PYTHON = $(VENV)/bin/python3
 PIP = $(VENV)/bin/pip
+HAS_BEEN_INSTALLED = $(VENV)/.has_been_installed
 
 run: $(VENV)
 	$(PYTHON) a-maze-ing.py config.txt
@@ -8,10 +9,12 @@ run: $(VENV)
 $(VENV):
 	python3 -m venv $(VENV)
 
-install: $(VENV)
+install: $(HAS_BEEN_INSTALLED)
+$(HAS_BEEN_INSTALLED): $(VENV)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
 	$(PIP) install ./maze_app/generator
+	@touch $(HAS_BEEN_INSTALLED)
 	@echo "Dependencies installed."
 
 debug: $(VENV)
@@ -28,10 +31,10 @@ lint: $(VENV)
 		--check-untyped-defs
 
 clean:
-	rm -rf $(VENV)
-	find . -type d -name "__pycache__" -exec rm -rf {} +
-	find . -type d -name "*.egg-info" -exec rm -rf {} +
-	find . -type d -name "build" -exec rm -rf {} +
-	find . -type d -name ".mypy_cache" -exec rm -rf {} +
+	@rm -rf $(VENV)
+	@find . -type d -name "__pycache__" -exec rm -rf {} +
+	@find . -type d -name "*.egg-info" -exec rm -rf {} +
+	@find . -type d -name "build" -exec rm -rf {} +
+	@find . -type d -name ".mypy_cache" -exec rm -rf {} +
 
 .PHONY: run install debug lint clean

@@ -11,7 +11,7 @@ except ModuleNotFoundError:
                      "Run: make install\n\033[0m")
     sys.exit(1)
 
-from typing import List, Tuple, Optional, Dict, Union
+from typing import List, Tuple, Dict, Optional, Union
 from maze_app.generator.MazeGenerator import MazeGenerator
 from parse.config_parser import read_config, parse_config
 from parse.config_model import MazeConfig
@@ -49,15 +49,15 @@ def main() -> None:
     except ValidationError as e:
         for error in e.errors():
             clean = error["msg"][13:]
-            sys.stderr.write(f"Config error: {clean} ")
+            sys.stderr.write(f"Config error: {clean} \n")
         sys.exit(1)
 
     except ValueError as e:
-        sys.stderr.write(f"Error: {e} ")
+        sys.stderr.write(f"Error: {e} \n")
         sys.exit(1)
 
     except Exception as e:
-        sys.stderr.write(f"Error: {e} ")
+        sys.stderr.write(f"Error: {e} \n")
         sys.exit(1)
 
     blue = "\033[96m"
